@@ -1,0 +1,2 @@
+# megabot
+scalp trade crypto
