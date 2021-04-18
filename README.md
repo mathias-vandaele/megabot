@@ -9,7 +9,7 @@ this is a bot aiming to scalp trade crypto currencies using AI and various india
 
 or via HTTPS protocol
 
-```git clone git@github.com:Binance-docs/Binance_Futures_python.git```
+```git clone https://github.com/Binance-docs/Binance_Futures_python.git```
 
 then 
 
