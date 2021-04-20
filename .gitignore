@@ -130,3 +130,6 @@ dmypy.json
 
 #pycharm
 .idea/
+
+#LSTM datas
+resources/*.csv
