@@ -14,6 +14,6 @@ class data_management:
 
     @staticmethod
     def retrieve_and_save_data(pair, since):
-        ibinance_datas = binance_data()
-        datas = ibinance_datas.retrieve_data(pair, constants.kline_interval, since)
-        np.savetxt("resources/" + pair + ".csv", datas, delimiter=',', fmt='%s')
+        instance_binance_data = binance_data()
+        data = instance_binance_data.retrieve_data(pair, constants.kline_interval, since)
+        np.savetxt("resources/" + pair + ".csv", data, delimiter=',', fmt='%s')
