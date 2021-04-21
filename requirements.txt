@@ -13,12 +13,11 @@ chardet==3.0.4
 Click==7.0
 colorama==0.4.3
 constantly==15.1.0
-cryptography==3.3.2
+cryptography==3.4.6
 cycler==0.10.0
 dateparser==1.0.0
 DateTime==4.3
 dbus-python==1.2.16
-defer==1.0.6
 distlib==0.3.0
 distro==1.4.0
 distro-info===0.23ubuntu1
