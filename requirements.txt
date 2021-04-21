@@ -20,7 +20,6 @@ DateTime==4.3
 dbus-python==1.2.16
 distlib==0.3.0
 distro==1.4.0
-distro-info===0.23ubuntu1
 entrypoints==0.3
 filelock==3.0.12
 flatbuffers==1.12
