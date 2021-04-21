@@ -3,6 +3,6 @@ author : Mathias Vandaele
 """
 
 
-class bollinger_bands:
+class BollingerBands:
     def __init__(self):
         self.__init__()

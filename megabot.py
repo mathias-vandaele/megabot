@@ -4,7 +4,7 @@ author : Mathias Vandaele
 import argparse
 import sys
 
-from utils.data_management import data_management
+from utils.data_management import DataManagement
 
 
 def main(args):
@@ -20,7 +20,7 @@ def main(args):
         if args.date is None:
             sys.exit("For this mode; you need to set --pair to select the date you want to fetch the data from ")
         print("retrieving fresh data ...")
-        data_management.retrieve_and_save_data(args.pair, args.date)
+        DataManagement.retrieve_and_save_data(args.pair, args.date)
 
 
 # Press the green button in the gutter to run the script

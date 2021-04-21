@@ -3,7 +3,7 @@ author : Mathias Vandaele
 """
 
 
-class macd:
+class Macd:
 
     def __init__(self):
         self.__init__(self)
