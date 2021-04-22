@@ -1,2 +1,5 @@
 numpy==1.19.5
 python_binance==0.7.9
+
+argparse~=1.4.0
+tensorflow~=2.4.1

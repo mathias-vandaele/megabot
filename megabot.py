@@ -5,10 +5,14 @@ import argparse
 import sys
 
 from utils.data_management import DataManagement
+from neural_intelligence import batches_generator
 
 
 def main(parsed_args):
     if parsed_args.mode == "train":
+        if parsed_args.pair is None:
+            sys.exit("For this mode; you need to set --pair to select the pair you want to fetch "
+                     "the data")
         print("training mode starting")
     elif parsed_args.mode == "run":
         print("running mode starting")
@@ -22,7 +26,7 @@ def main(parsed_args):
             sys.exit("For this mode; you need to set --pair to select the date you want to fetch "
                      "the data from ")
         print("retrieving fresh data ...")
-        DataManagement.retrieve_and_save_data(args.pair, args.date)
+        DataManagement.retrieve_and_save_data(parsed_args.pair, parsed_args.date)
 
 
 # Press the green button in the gutter to run the script
