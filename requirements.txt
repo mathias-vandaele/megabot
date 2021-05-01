@@ -3,3 +3,6 @@ python_binance==0.7.9
 
 argparse~=1.4.0
 tensorflow~=2.4.1
+sklearn~=0.0
+scikit-learn~=0.24.2
+matplotlib~=3.4.1
