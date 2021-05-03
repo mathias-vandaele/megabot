@@ -2,15 +2,17 @@ from tensorflow.keras.layers import Dropout, LSTM, Dense
 from tensorflow.keras.models import Sequential
 
 
-class LstmNetworkMultivariateStateless:
+class LstmNetworkMultivariateStateful:
     def __init__(self, sequence_length=60, features=10):
+        # TODO : implement a stateful model ==> is a 3D input instead of 2D. Why ? Because we
+        #  will repeat looking forward the next price without resetting the state of the cell.
+        #  Here is an example; I want to look forward 60 minutes in advance, and looking at the
+        #  last 2h (120m) backward then for the first prediction, I'll use an entry sequence of
+        #  120, and the size of the batch will be 60, that will give us a matrix of (60, 120,
+        #  nb_features). As a training entry It could be the 4D matrix (X, 60, 120, nb_features)
+
         self.model = Sequential()
-        self.model.add(LSTM(128, activation='relu', input_shape=(sequence_length, features),
-                            return_sequences=True))
-        self.model.add(LSTM(32, activation='relu', return_sequences=False))
-        self.model.add(Dropout(0.2))
-        self.model.add(Dense(1))
-        self.model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
+        # TODO : To be implemented
         self.model.summary()
 
     def predict(self):

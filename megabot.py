@@ -4,9 +4,6 @@ author : Mathias Vandaele
 import argparse
 import sys
 
-from tensorflow.python.estimator import inputs
-
-from neural_intelligence.batches_generator import generate_batch
 from utils.data_management import DataManagement
 from neural_intelligence.lstm_network_multivariate_stateless import LstmNetworkMultivariateStateless
 
@@ -17,9 +14,10 @@ def main(parsed_args):
             sys.exit("For this mode; you need to set --pair to select the pair you want to fetch "
                      "the data")
         print("training mode starting")
-        inputs, targets = generate_batch("BTCUSDT")
-        lstm = LstmNetworkMultivariateStateless(features=5)
-        lstm.train(inputs, targets)
+        lstm = LstmNetworkMultivariateStateless(parsed_args.pair, features=2, sequence_length=60)
+        lstm.train()
+        lstm.save()
+        lstm.plot_forecast_vs_truth(parsed_args.pair)
     elif parsed_args.mode == "run":
         print("running mode starting")
     elif parsed_args.mode == "backtest":
