@@ -84,7 +84,7 @@ class LstmNetworkMultivariateStateless:
             plt.plot(forecasted_value_to_plot, 'r--', label='predicted')
             plt.plot(real_value, label='real value')
             plt.legend(loc='best')
-            plt.savefig("./neural_intelligence/LstmNetworkMultivariateStatelessData"
+            plt.savefig("./forecast_accuracy/LstmNetworkMultivariateStatelessData"
                         "/LstmNetworkMultivariateStateless"+str(i)+".png")
             plt.clf()
             plt.cla()
