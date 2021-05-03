@@ -14,9 +14,9 @@ def main(parsed_args):
             sys.exit("For this mode; you need to set --pair to select the pair you want to fetch "
                      "the data")
         print("training mode starting")
-        lstm = LstmNetworkMultivariateStateless(parsed_args.pair, features=2, sequence_length=60)
-        lstm.train()
-        lstm.save()
+        lstm = LstmNetworkMultivariateStateless(parsed_args.pair, features=3, sequence_length=60, n_future=60)
+        #lstm.train()
+        #lstm.save()
         lstm.plot_forecast_vs_truth(parsed_args.pair)
     elif parsed_args.mode == "run":
         print("running mode starting")

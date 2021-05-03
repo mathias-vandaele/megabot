@@ -17,16 +17,16 @@ def generate_batch_yielded(pair, sequence_length=60):
         yield np.array(x_train), np.array(y_train)
 
 
-def generate_batch(dataset, univariate_index, sequence_length=60):
+def generate_batch(dataset, univariate_index, n_future, sequence_length=60):
     x_data, y_data, y_data_supplied = [], [], []
-    for i in range(len(dataset) - sequence_length - 1):
+    for i in range(len(dataset) - sequence_length - 1 - n_future):
         x_data.append(dataset[i:i + sequence_length])
-        y_data.append([dataset[i + sequence_length, univariate_index]])
+        y_data.append(dataset[i + sequence_length: i + sequence_length + n_future, [univariate_index]])
     return np.array(x_data), np.array(y_data)
 
 
 def get_clean_data(pair):
     with open("resources/" + pair + ".csv", mode='r') as csv_file:
         data = np.array(list(csv.reader(csv_file)))
-        clean_data = data[:, [Constants.CANDLE_CLOSE, Constants.QUOTE_VOLUME]].astype(float)
+        clean_data = data[:, [Constants.CANDLE_CLOSE, Constants.QUOTE_VOLUME, Constants.TAKER_BUY_ASSET_VOLUME]].astype(float)
         return clean_data

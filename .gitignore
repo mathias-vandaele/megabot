@@ -133,3 +133,6 @@ dmypy.json
 
 #LSTM datas
 resources/*.csv
+
+#Images
+*.png
