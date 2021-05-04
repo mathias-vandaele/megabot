@@ -45,8 +45,8 @@ class LstmNetworkMultivariateStateless:
                               self.n_future,
                               sequence_length=self.sequence_length)
         print(x.shape, y.shape)
-        self.model.fit(x, y, callbacks=[LearningRateReducerCb()], epochs=2,
-                       validation_split=0.1, batch_size=16, verbose=1)
+        self.model.fit(x, y, callbacks=[LearningRateReducerCb()], epochs=10,
+                       validation_split=0.1, batch_size=128, verbose=1)
 
     def generate_random_slicing(self):
         self.slicing_train = 0.7 + (0.99 - 0.7) * random.random()
@@ -55,15 +55,15 @@ class LstmNetworkMultivariateStateless:
         self.model.save('./neural_intelligence/models/lstm_network_multivariate_stateless'
                         '/lstm_network_multivariate_stateless.h5')
 
-    def plot_forecast_vs_truth(self, pair, future=60):
+    def plot_forecast_vs_truth(self, pair):
         self.model = models.load_model('./neural_intelligence/models'
                                        '/lstm_network_multivariate_stateless'
                                        '/lstm_network_multivariate_stateless.h5')
         x = np.array(get_clean_data(pair))
         for i in range(20):
             self.generate_random_slicing()
-            real_value = x[:int(len(x) * self.slicing_train + future)]
-            real_value = real_value[-self.sequence_length - future:]
+            real_value = x[:int(len(x) * self.slicing_train + self.n_future)]
+            real_value = real_value[-self.sequence_length - self.n_future:]
             real_value = real_value[:, self.univariate_index]
             data_to_use_for_prediction = x[:int(len(x) * self.slicing_train)]
             value_to_forecast_with = data_to_use_for_prediction[-self.sequence_length:]
