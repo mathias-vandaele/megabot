@@ -15,6 +15,7 @@ from neural_intelligence.learning_rate_reducer_cb import LearningRateReducerCb
 class LstmNetworkMultivariateStateless:
 
     def __init__(self, pair, sequence_length=60, n_future=60, features=10, univariate_index=0):
+
         self.slicing_train = 0.7 + (0.99-0.7)*random.random()
         self.univariate_index = univariate_index
         self.n_future = n_future
@@ -34,7 +35,7 @@ class LstmNetworkMultivariateStateless:
         # mean_squared_error, mean_absolute_error
         # optimizer can be :
         # adam, rmsprop
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.compile(optimizer='rmsprop', loss='mean_squared_error')
         self.model.summary()
 
     def predict(self):

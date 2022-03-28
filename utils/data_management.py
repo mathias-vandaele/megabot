@@ -1,6 +1,8 @@
 """
 author : Mathias Vandaele
 """
+from builtins import staticmethod
+
 import numpy as np
 
 from api.binance_data import BinanceData
