@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.python.keras import Sequential, models, Input, Model
 from tensorflow.python.keras.layers import LSTM, Dense, Flatten
+from tensorflow.python.keras.saving.saved_model.load import metrics
 
 from neural_intelligence.batches_generator import generate_smart_lstm_batch, get_smart_lstm_data
 from neural_intelligence.learning_rate_reducer_cb import LearningRateReducerCb
@@ -28,30 +29,33 @@ class SmartLSTM:
         self.training_output = self.fitterO.transform(self.training_data[:, [1, 2]])
 
         input_layer = Input(shape=(sequence_length, 2))
-        layer_1_lstm = LSTM(64, return_sequences=True)(input_layer)
-        layer_2_lstm = LSTM(64, return_sequences=True)(layer_1_lstm)
-        layer_3_lstm = LSTM(64)(layer_2_lstm)
+        layer_1_lstm = LSTM(128, return_sequences=True)(input_layer)
 
+        layer_2_lstm_odd = LSTM(64, return_sequences=True)(layer_1_lstm)
+        layer_3_lstm_odd = LSTM(32, return_sequences=True)(layer_2_lstm_odd)
         # guess the sell_index
-        dense_sell_index_proba = Dense(32)(layer_3_lstm)
-        output_sell_index_proba = Dense(1, activation='sigmoid')(dense_sell_index_proba)
+        output_sell_index_proba = LSTM(1, activation='sigmoid')(layer_3_lstm_odd)
 
+        layer_2_lstm_closing = LSTM(64, return_sequences=True)(layer_1_lstm)
+        layer_3_lstm_closing = LSTM(32, return_sequences=True)(layer_2_lstm_closing)
         # guess when to close the position
-        dense_closing_position_candle = Dense(32)(layer_3_lstm)
-        output_closing_position_candle = Dense(1, activation='relu')(dense_closing_position_candle)
+        output_closing_position_candle = LSTM(1, activation='relu')(layer_3_lstm_closing)
 
         self.model = Model(inputs=input_layer, outputs=[output_sell_index_proba, output_closing_position_candle])
 
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.compile(optimizer='adam',
+                           loss={'lstm_3': 'mse', 'lstm_6': 'mse'}, metrics=[
+                metrics.AUC()
+            ])
         self.model.summary()
 
     def train(self):
-        x, y = generate_smart_lstm_batch(self.training_input, self.training_output, sequence_length=30)
+        x, y1, y2 = generate_smart_lstm_batch(self.training_input, self.training_output, sequence_length=30)
 
-        print(x.shape, y.shape)
+        print(x.shape, y1.shape, y2.shape)
 
-        self.model.fit(x, y, callbacks=[LearningRateReducerCb()], epochs=10,
-                       validation_split=0.1, batch_size=258, verbose=1)
+        self.model.fit(x, [y1, y2], callbacks=[LearningRateReducerCb()], epochs=10,
+                       validation_split=0.1, batch_size=128, verbose=1)
 
     def save(self):
         self.model.save('./neural_intelligence/models/smart_lstm'
@@ -75,6 +79,7 @@ class SmartLSTM:
             print("FOUND BUY INDEX ==> " + str(final_results[0][0]))
             print("REAL BUY INDEX WAS ==> " + str(self.full_dataset[int((self.random_validation_slicing * len(
                 self.full_dataset)) + self.sequence_length + 1)][1]))
+            print("CLOSE POSITION IN ==> " + str(final_results[0][1]))
 
             if final_results[0][0] > 0.8:
 
@@ -82,12 +87,12 @@ class SmartLSTM:
                 print("REAL BUY INDEX WAS ==> " + str(self.full_dataset[int((self.random_validation_slicing * len(
                     self.full_dataset)) + self.sequence_length + 1)][1]))
                 print("PRICE OF OPENING SHORT POSITION IS ==> " + str(self.full_dataset[int((
-                                                                                                        self.random_validation_slicing * len(
-                                                                                                    self.full_dataset)) + self.sequence_length + 1)][
+                                                                                                    self.random_validation_slicing * len(
+                                                                                                self.full_dataset)) + self.sequence_length + 1)][
                                                                           0]))
                 print("PRICE OF CLOSING SHORT POSITION IS ==> " + str(self.full_dataset[int((
-                                                                                                        self.random_validation_slicing * len(
-                                                                                                    self.full_dataset)) + self.sequence_length + 1 + int(
+                                                                                                    self.random_validation_slicing * len(
+                                                                                                self.full_dataset)) + self.sequence_length + 1 + int(
                     final_results[0][1]))][0]))
 
                 earned = self.full_dataset[

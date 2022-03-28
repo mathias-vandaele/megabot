@@ -29,8 +29,8 @@ def main(parsed_args):
 
         if parsed_args.algo == "smartlstm":
             smart_lstm = SmartLSTM(parsed_args.pair, sequence_length=30)
-            #smart_lstm.train()
-            #smart_lstm.save()
+            smart_lstm.train()
+            smart_lstm.save()
             smart_lstm.forecast_and_compare()
 
     elif parsed_args.mode == "run":

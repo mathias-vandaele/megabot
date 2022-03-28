@@ -10,7 +10,7 @@ class Constants:
 
     api_key = os.environ.get('binance_api')
     api_secret = os.environ.get('binance_secret')
-    kline_interval = Client.KLINE_INTERVAL_1MINUTE
+    kline_interval = Client.KLINE_INTERVAL_1HOUR
 
     # Timestamp when the candle is opened
     CANDLE_OPEN_TIMESTAMP = 0

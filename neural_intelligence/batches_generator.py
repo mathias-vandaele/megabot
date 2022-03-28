@@ -28,11 +28,12 @@ def generate_batch(dataset, univariate_index, n_future, sequence_length=60):
 
 
 def generate_smart_lstm_batch(dataset_x, dataset_y, sequence_length=30):
-    x_data, y_data = [], []
+    x_data, y1_data, y2_data = [], [], []
     for i in range(len(list(zip(dataset_x, dataset_y))) - sequence_length - 1):
         x_data.append(dataset_x[i:i + sequence_length])
-        y_data.append(dataset_y[i + sequence_length])
-    return np.array(x_data), np.array(y_data)
+        y1_data.append(dataset_y[i + sequence_length][0])
+        y2_data.append(dataset_y[i + sequence_length][1])
+    return np.array(x_data), np.array(y1_data), np.array(y2_data)
 
 
 def get_price_only(self, pair):
