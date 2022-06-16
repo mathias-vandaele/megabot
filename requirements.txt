@@ -1,4 +1,4 @@
-numpy==1.19.5
+numpy==1.21.0
 python_binance==0.7.9
 
 argparse~=1.4.0
